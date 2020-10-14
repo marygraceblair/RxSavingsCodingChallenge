@@ -5,4 +5,4 @@ module.exports = app => {
         res.json({ message: "RxSavings Restful API" });
     });
 
-}
+};
