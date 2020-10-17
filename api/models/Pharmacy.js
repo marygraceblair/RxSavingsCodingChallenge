@@ -10,15 +10,17 @@ const sequelize = new Sequelize(process.env.DB_SCHEMA || 'postgres',
                                         ssl: process.env.DB_SSL == "true"
                                     }
                                 });
-const Person = sequelize.define('Person', {
-    firstName: {
+
+const Pharmacy = sequelize.define('Pharmacy', {
+    name: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    lastName: {
+    address: {
         type: Sequelize.STRING,
         allowNull: true
     },
+    
 });
 module.exports = {
     sequelize: sequelize,
