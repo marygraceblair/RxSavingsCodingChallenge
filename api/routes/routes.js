@@ -1,50 +1,30 @@
 var personsRouter = require('./persons'); 
 
-var elasticsearch = require('elasticsearch');
-var client = new elasticsearch.Client({
-  host: 'localhost:9200',
-  log: 'trace',
-  apiVersion: '7.2', // use the same version of your Elasticsearch instance
-});
+const { Client } = require('@elastic/elasticsearch');
+const client = new Client({ node: 'http://localhost:9200' });
 
+async function run () {
+    
+    // Let's search!
+    const { body } = await client.search({
+      index: 'pharmacy-1',
+      body: {
+        query: {
+          match_all: {
+            
+          }
+        }
+      }
+    })
+    console.log(body.hits.hits)
+}
+  
 module.exports = app => {
 
     //initial route
     app.get("/", (req, res) => {
 
-        //ensure that the elasticsearch cluster is up
-        client.ping({
-            // ping usually has a 3000ms timeout
-            requestTimeout: 1000
-          }, function (error) {
-            if (error) {
-              console.trace('elasticsearch cluster is down!');
-            } else {
-              console.log('All is well');
-            }
-          });
+        run().catch(console.log)
         res.json({ message: "RxSavings Restful API" });
     });
-
-    //test elasticsearch query
-    app.get("/", (req, res) => {
-
-        //ensure that the elasticsearch cluster is up
-        client.ping({
-            // ping usually has a 3000ms timeout
-            requestTimeout: 1000
-          }, function (error) {
-            if (error) {
-              console.trace('elasticsearch cluster is down!');
-            } else {
-              console.log('All is well');
-            }
-          });
-        res.json({ message: "RxSavings Restful API" });
-    });
-
-
-
-    
-
 };
