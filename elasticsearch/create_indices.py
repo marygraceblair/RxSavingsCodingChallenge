@@ -1,5 +1,8 @@
 #use python elastic search module
 
+#most of this code is adapted from the official documentation of the python elasticsearch library
+#the original can be found here: https://github.com/elastic/elasticsearch-py/tree/master/examples/bulk-ingest
+
 from datetime import datetime
 from elasticsearch import Elasticsearch
 import csv
@@ -9,21 +12,24 @@ from elasticsearch.helpers import streaming_bulk
 es = Elasticsearch()
 
 def create_index(client):
-    mapping = '''
+    options = '''
     {
+    "settings": {
+        "number_of_shards": 1
+    },
     "mappings": {
         "properties": {
-                "name": { type: "text" },
-                "address": { type: "text" },
-                "city": { type: "text" },
-                "state": { type: "text" },
-                "zip": { type: "keyword"},
-                "location": {type: "geo_point"}
+                "name": { "type": "text" },
+                "address": { "type": "text" },
+                "city": { "type": "text" },
+                "state": { "type": "text" },
+                "zip": { "type": "keyword"},
+                "location": { "type": "geo_point"}
             }
         }
     }
     '''
-    client.indices.create(index='pharmacy-1', body=mapping, ignore=400)
+    client.indices.create(index='pharmacy-1', body=options, ignore=400)
 
 
 def generate_documents():
@@ -43,7 +49,8 @@ def generate_documents():
                 "address": row["address"],
                 "city": row["city"],
                 "state": row["state"],
-                "zip": row["state"]
+                "zip": row["state"],
+                #"location": str(row["latitude"]) + ',' + str(row["longitude"])
             }
             lat = row["latitude"]
             lon = row["longitude"]
@@ -61,7 +68,7 @@ def main():
 
     print("Creating an index...")
     create_index(client)
-
+    
     print("Indexing documents...")
     number_of_docs = 30
     successes = 0
@@ -70,6 +77,7 @@ def main():
     ):
         successes += ok
     print("Indexed %d/%d documents" % (successes, number_of_docs))
+    
 
 
 if __name__ == "__main__":
