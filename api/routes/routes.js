@@ -56,7 +56,8 @@ module.exports = app => {
 
             const es_result = result.body.hits.hits[0]
             const pharmacy = es_result["_source"]
-            res.json({"name": pharmacy["name"], "address": pharmacy["address"], "distance": parseFloat(es_result.sort).toFixed(2) + ' ' + geo_distance_unit});
+            const full_address =  pharmacy["address"] + ', ' + pharmacy["city"] + ', ' + pharmacy['state'] + ' ' + pharmacy['zip']
+            res.json({"name": pharmacy["name"], "complete address": full_address , "distance": parseFloat(es_result.sort).toFixed(2) + ' ' + geo_distance_unit});
         })
     });
 };

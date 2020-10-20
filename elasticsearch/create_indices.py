@@ -53,7 +53,7 @@ def generate_documents():
                 "address": row["address"],
                 "city": row["city"],
                 "state": row["state"],
-                "zip": row["state"],
+                "zip": row["zip"],
             }
             lat = row["latitude"]
             lon = row["longitude"]
