@@ -119,16 +119,46 @@ module.exports = app => {
             maxRetries: 3
           }, (err, result) => {
             if (err) console.log(err)
+            res.json({"name": result.body.hits.hits[0]["_source"]["name"], "address": result.body.hits.hits[0]["_source"]["address"]});
           })
+
+          
         
 
     });
 
     //closest geo point with params
     app.get("/closest_with_params", (req, res) => {
-        res.json({ message: 'with user parameters'});
-        return 2
-        //return closest_geo_point_params(req.query.lat, req.query.long)
+        
+        client.search({
+            index: 'pharmacy-1',
+            size: 1,
+            body: { "size":1,
+            "query": {
+                "match_all":{}    
+            },
+           "sort": [
+             {
+               "_geo_distance": {
+                 "location": { 
+                   "lat": req.query.lat, 
+                   "lon": req.query.long
+                 },
+                 "order":         "asc",
+                 "unit":          "km", 
+                 "distance_type": "plane" 
+               }
+             }
+           ] }
+          }, {
+            ignore: [404],
+            maxRetries: 3
+          }, (err, result) => {
+            if (err) console.log(err)
+            res.json({"name": result.body.hits.hits[0]["_source"]["name"], "address": result.body.hits.hits[0]["_source"]["address"]});
+          })
+
+          
         
     });
 };
