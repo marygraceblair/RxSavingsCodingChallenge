@@ -11,12 +11,17 @@ You will need to have an ElasticSearch cluster up and running on your localhost 
 ## Requires
    Python3, Node.js, Express.js, ElasticSearch cluster on localhost:9200
    
+## Install ElasticSearch
+   Please follow the instructions from the ElasticSearch Documentation
+   https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started-install.html
+   
 ## Upload the Data to ElasticSearch
     python3 /elasticsearch/create_indices.py
     #you will need an ElasticSearch cluster on localhost:9200
    
 ## Start the API
     npm run start
+   
    
 # API
 ## Find the closest pharmacy to latitude/longitude input
