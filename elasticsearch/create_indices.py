@@ -42,7 +42,7 @@ def generate_documents():
 
     global num_of_documents
     num_of_documents = 0
-    DATASET_PATH= './pharmacies.csv'
+    DATASET_PATH= './elasticsearch/pharmacies.csv'
     with open(DATASET_PATH, mode="r") as f:
         reader = csv.DictReader(f)
 
