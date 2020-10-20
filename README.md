@@ -16,7 +16,7 @@ You will need to have an ElasticSearch cluster up and running on your localhost 
    https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started-install.html
    
 ## Upload the Data to ElasticSearch
-    python3 /elasticsearch/create_indices.py
+    python3 elasticsearch/create_indices.py
     #you will need an ElasticSearch cluster on localhost:9200
    
 ## Start the API
